@@ -37,6 +37,10 @@ class ToDo {
         id: '06',
         todoText: 'Dinner with family',
       ),
+      ToDo(
+        id: '04',
+        todoText: 'Tea break',
+      ),
     ];
   }
 }

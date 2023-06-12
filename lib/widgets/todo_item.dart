@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:todo/constants/colors.dart';
 import 'package:todo/model/todo.dart';
 
 class ToDoItems extends StatelessWidget {
   final ToDo todo;
-  const ToDoItems({super.key, required this.todo});
+  final onToDoChanged;
+  final onDeleteItem;
+  const ToDoItems({
+    super.key,
+    required this.todo,
+    required this.onToDoChanged,
+    required this.onDeleteItem,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,8 @@ class ToDoItems extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 20),
       child: ListTile(
         onTap: () {
-          print('Clicked on todo items');
+          // print('Clicked on todo items');
+          onToDoChanged(todo);
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -53,7 +59,8 @@ class ToDoItems extends StatelessWidget {
             iconSize: 18,
             icon: Icon(Icons.delete),
             onPressed: () {
-              print("Clicked on delete button");
+              // print("Clicked on delete button");
+              onDeleteItem(todo.id);
             },
           ),
         ),

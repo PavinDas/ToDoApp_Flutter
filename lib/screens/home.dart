@@ -3,9 +3,14 @@ import 'package:todo/constants/colors.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/widgets/todo_item.dart';
 
-class Home extends StatelessWidget {
-   Home({super.key});
+class Home extends StatefulWidget {
+  Home({super.key});
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final todoList = ToDo.todoList();
 
   @override
@@ -34,38 +39,118 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
-        child: Column(
-          children: [
-            seachBox(),
-            Expanded(
-              child: ListView(
-                children: [
-                  Container(
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+            child: Column(
+              children: [
+                seachBox(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 15,
+                          bottom: 20,
+                        ),
+                        child: Text(
+                          'All ToDos',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      for (ToDo todo in todoList)
+                        ToDoItems(
+                          todo: todo,
+                          onToDoChanged: _handleToDoChange,
+                          onDeleteItem: _deleteToDoItem,
+                        ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
                     margin: EdgeInsets.only(
-                      top: 15,
-                      bottom: 20,
+                      bottom: 15,
+                      right: 20,
+                      left: 20,
                     ),
-                    child: Text(
-                      'All ToDos',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 10.0,
+                          spreadRadius: 0.0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Add new todo item',
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
-                  for(ToDo todo in todoList)
-                  ToDoItems(todo: todo,),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    bottom: 14,
+                    right: 20,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Icon(
+                      Icons.add,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: tdBlue,
+                      minimumSize: Size(55, 55),
+                      elevation: 10,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
+    );
+  }
+
+  void _handleToDoChange(ToDo todo) {
+    setState(
+      () {},
+    );
+    todo.isDone = !todo.isDone;
+  }
+
+  void _deleteToDoItem(String id) {
+    setState(
+      () {
+        todoList.removeWhere(
+          (item) => item.id == id,
+        );
+      },
     );
   }
 
